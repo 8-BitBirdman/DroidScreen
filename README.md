@@ -5,7 +5,6 @@
 </div>
 <hr/>
 <p align="center">✨ <strong>A simple & beautiful GUI application for scrcpy</strong></p>
-<h3 align="center"> <strong> NOTE: Simon no energy to continue maintenance, if interested please fork</h3>
 
 <p align="center">
   <a href="https://github.com/feross/standard">
