@@ -1,17 +1,13 @@
 export default {
-	footer: {
-		powerBy: 'Power by',
-		author: 'Author'
-	},
 	dashboard: {
 		configuration: 'Configuration',
 		management: 'Management'
 	},
 	configuration: {
 		source: {
-			label: 'Scrcpy',
-			placeholder: 'Scrcpy folder path - e.g: C:\\scrcpy-win64',
-			tooltip: 'If not set, please configure the scrcpy folder path to an environment variable'
+			label: 'scrcpy path',
+			placeholder: 'scrcpy folder path (leave empty if in PATH)',
+			tooltip: 'If not set, scrcpy must be accessible in your PATH'
 		},
 		title: {
 			label: 'window title',
@@ -128,11 +124,11 @@ export default {
 		},
 		open: {
 			loading: 'Opening the mirror, please wait a moment...',
-			success: '{name} has been closed normally',
+			success: '{name} closed normally',
 			error: `{name} failed to start. Please check the documentation carefully:
 			<p>1. Whether scrcpy configured correctly</p>
 			<p>2. Whether the phone opens the debugging option</p>
-			<p>3. Whether the scrcpy-gui software set to start by the administrator</p>
+			<p>3. Whether the DroidScreen software set to start by the administrator</p>
 			<p>4. Whether the scrcpy command line can open the device</p>
 			<p>5. Run the \`adb-devices\` command to see if the device appears</p>
 			If the above configuration is normal, please go to Github to file an issue, and I will resolve it as soon as possible`
@@ -150,18 +146,40 @@ export default {
 			success: '{name} already disconnected'
 		},
 		error: {
-			'unknownScrcpyPathException': 'The path of the Scrcpy folder is incorrectly configured. Make sure that `scrcpy.exe` exists in this folder'
+			'unknownScrcpyPathException': 'The path of the scrcpy folder is incorrectly configured. Make sure that `scrcpy` exists in this folder'
 		}
 	},
 	titleBar: {
 		document: 'Document',
 		checkForUpdates: 'Update',
 		feedback: 'Feedback',
-		switchLanguage: 'Languages',
 		about: 'About'
 	},
 	tray: {
 		hide: 'Hide',
 		exit: 'Exit'
+	},
+	quickConnect: {
+		title: 'Quick Connect',
+		subtitle: 'Discover nearby devices via Wireless Debugging (Android 11+)',
+		scan: 'Scan for Devices',
+		scanning: 'Scanning...',
+		noDevices: 'No devices found. Make sure Wireless Debugging is enabled on your phone.',
+		pair: 'Pair',
+		connect: 'Connect',
+		paired: 'Paired',
+		pairDialog: {
+			title: 'Enter Pairing Code',
+			hint: 'On your phone: Wireless Debugging → Pair device with pairing code',
+			placeholder: '6-digit code',
+			confirm: 'Pair',
+			cancel: 'Cancel'
+		},
+		pairSuccess: 'Device paired! Connecting...',
+		pairFail: 'Pairing failed. Check the code and try again.',
+		connectSuccess: 'Connected! Device is now available.',
+		connectFail: 'Connection failed. Try pairing again.',
+		showManual: '▼ Manual IP connect',
+		hideManual: '▲ Hide manual IP'
 	}
 }

@@ -12,9 +12,9 @@ export default vue => {
 		hideWhenClickingClose = config.hidden
 	}
 	new Titlebar({
-		backgroundColor: Color.fromHex('#868686'),
-		shadow: true,
-		icon: 'https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/favicon.ico',
+		backgroundColor: Color.fromHex('#0d0d0d'),
+		shadow: false,
+		icon: `${__static}/icons/256x256.png`,
 		maximizable: false,
 		hideWhenClickingClose,
 		menu: Menu(tray)

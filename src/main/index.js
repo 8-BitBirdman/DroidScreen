@@ -1,10 +1,11 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import adb from './adb'
 import scrcpy from './scrcpy'
+const remoteMain = require('@electron/remote/main')
+remoteMain.initialize()
 
 /**
  * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
 	global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -23,7 +24,7 @@ function createWindow() {
 		height: 800,
 		width: 513,
 		frame: false,
-		title: 'Scrcpy',
+		title: 'DroidScreen',
 		fullscreenable: false,
 		// titleBarStyle: 'hidden',
 		vibrancy: 'ultra-dark',
@@ -31,11 +32,15 @@ function createWindow() {
 		icon: `${__static}/icons/256x256.png`,
 		show: false,
 		webPreferences: {
-			backgroundThrottling: false
+			backgroundThrottling: false,
+			nodeIntegration: true,
+			contextIsolation: false,
+			enableRemoteModule: true
 		},
 		// resizable: false
 	})
 
+	remoteMain.enable(mainWindow.webContents)
 	mainWindow.setMenu(null)
 
 	mainWindow.loadURL(winURL)
@@ -44,9 +49,7 @@ function createWindow() {
 		// mainWindow.webContents.openDevTools()
 	})
 	mainWindow.on('close', () => {
-		ipcMain.removeAllListeners('open')
-		ipcMain.removeAllListeners('connect')
-		ipcMain.removeAllListeners('disconnect')
+		// listeners are registered once globally; nothing to clean here
 	})
 
 	mainWindow.on('closed', () => {
@@ -55,14 +58,25 @@ function createWindow() {
 
 	mainWindow.webContents.on('did-finish-load', function () {
 		adb.onDevices(mainWindow.webContents)
-		ipcMain.on('open', scrcpy.open)
-		ipcMain.on('connect', adb.connect)
-		ipcMain.on('disconnect', adb.disconnect)
-
 	})
 }
 
-app.on('ready', createWindow)
+// Register IPC handlers once (survives page reloads in dev)
+function registerIpcHandlers() {
+	const channels = ['open', 'connect', 'disconnect', 'mdns', 'pair', 'connectDirect']
+	channels.forEach(ch => ipcMain.removeAllListeners(ch))
+	ipcMain.on('open', scrcpy.open)
+	ipcMain.on('connect', adb.connect)
+	ipcMain.on('disconnect', adb.disconnect)
+	ipcMain.on('mdns', adb.mdnsDiscover)
+	ipcMain.on('pair', adb.pairDevice)
+	ipcMain.on('connectDirect', adb.connectDirect)
+}
+
+app.on('ready', () => {
+	registerIpcHandlers()
+	createWindow()
+})
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
@@ -75,14 +89,6 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
-
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
 
 /*
 import { autoUpdater } from 'electron-updater'

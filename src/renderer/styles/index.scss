@@ -51,3 +51,92 @@ a:hover {
 //   overflow-x: hidden;
 //   overflow-y: hidden;
 // }
+
+/* Dark UI Overrides */
+body {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+.el-card {
+  background-color: #1e1e1e !important;
+  border: 1px solid #333 !important;
+  color: #e0e0e0 !important;
+}
+
+.el-form-item__label {
+  color: #bbb !important;
+}
+
+.el-input__inner, .el-textarea__inner {
+  background-color: #2b2b2b !important;
+  border: 1px solid #444 !important;
+  color: #e0e0e0 !important;
+}
+
+.el-button {
+  background-color: #2b2b2b !important;
+  border: 1px solid #444 !important;
+  color: #e0e0e0 !important;
+}
+
+.el-button--primary {
+  background-color: #409EFF !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.el-button--success {
+  background-color: #67C23A !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.el-checkbox__inner {
+  background-color: #2b2b2b !important;
+  border: 1px solid #444 !important;
+}
+
+.el-checkbox, .el-checkbox__label {
+  color: #aaa !important;
+}
+
+.el-checkbox.is-bordered {
+  border: 1px solid #444 !important;
+}
+
+.el-slider__runway {
+  background-color: #444 !important;
+}
+
+.el-popover, .el-select-dropdown {
+  background-color: #1e1e1e !important;
+  border: 1px solid #333 !important;
+  color: #e0e0e0 !important;
+}
+
+.el-popover__title {
+  color: #e0e0e0 !important;
+}
+
+.el-popper[x-placement^=bottom] .popper__arrow::after {
+  border-bottom-color: #1e1e1e !important;
+}
+
+.el-popper[x-placement^=top] .popper__arrow::after {
+  border-top-color: #1e1e1e !important;
+}
+
+.el-divider {
+  background-color: #444 !important;
+}
+
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+  background-color: #2b2b2b !important;
+}
+
+.el-input-number__decrease, .el-input-number__increase {
+  background-color: #2b2b2b !important;
+  border-color: #444 !important;
+  color: #e0e0e0 !important;
+}

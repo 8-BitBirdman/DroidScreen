@@ -9,7 +9,7 @@ export default {
 	name: 'LayoutHeader',
 	data() {
 		return {
-			title: 'Scrcpy',
+			title: 'DroidScreen',
 		}
 	}
 }
@@ -18,15 +18,15 @@ export default {
 <style>
 .el-header {
 	-webkit-app-region: drag;
-
 	height: 5.2vh !important;
 	text-align: center;
-	background-color: #868686;
-	color: #ececec;
-	font-size: 25px;
-	text-shadow: 1px 0px 4px #000;
+	background-color: #0d0d0d;
+	color: #fff;
+	font-size: 22px;
+	font-weight: 500;
+	letter-spacing: 1px;
 	line-height: 4.6vh;
-	box-shadow: 0px 2px 18px 5px #ccc;
+	border-bottom: 1px solid #222;
 }
 .handle-bar {
 	-webkit-app-region: no-drag;

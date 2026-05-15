@@ -1,217 +1,323 @@
 <div align="center">
-	<img width="80" height="80" src="https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/icon.png" alt="tomoto">
-	<br>
-	<h1>Scrcpy GUI</h1>
+
+<br/>
+
+<img src="static/icons/256x256.png" width="128" height="128" alt="DroidScreen" />
+
+# DroidScreen
+
+### Mirror, control and record your Android device on macOS — wirelessly.
+
+<br/>
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-3a7afe.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
+[![Release](https://img.shields.io/github/v/release/8-BitBirdman/droidscreen?style=for-the-badge&color=67c23a)](https://github.com/8-BitBirdman/droidscreen/releases)
+[![Platform](https://img.shields.io/badge/platform-macOS-1d1d1f?style=for-the-badge&logo=apple)](https://github.com/8-BitBirdman/droidscreen/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff6b6b?style=for-the-badge)](https://github.com/8-BitBirdman/droidscreen/pulls)
+
+<br/>
+
+**A modern, dark-themed GUI for [scrcpy](https://github.com/Genymobile/scrcpy) — built for macOS, designed for speed, paired in seconds.**
+
+<sub>No cable. No setup hassle. Just scan, pair, mirror.</sub>
+
 </div>
-<hr/>
-<p align="center">✨ <strong>A simple & beautiful GUI application for scrcpy</strong></p>
 
-<p align="center">
-  <a href="https://github.com/feross/standard">
-    <img src="https://img.shields.io/badge/code%20style-standard-green.svg?style=flat-square" alt="">
-  </a>
-  <a href="https://github.com/Tomotoes/scrcpy-gui/releases">
-    <img src="https://img.shields.io/github/downloads/Tomotoes/scrcpy-gui/total.svg?style=flat-square" alt="">
-  </a>
-   <a href="https://travis-ci.org/Tomotoes/scrcpy-gui/builds">
-    <img src="https://img.shields.io/travis/Tomotoes/scrcpy-gui.svg?style=flat-square" alt="">
-  </a>
-  <a href="https://github.com/Tomotoes/scrcpy-gui/releases/latest">
-    <img src="https://img.shields.io/github/release/Tomotoes/scrcpy-gui.svg?style=flat-square" alt="">
-  </a>
-  <a href="https://gitter.im/scrcpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img src="https://badges.gitter.im/scrcpy/community.svg?style=flat-square"></a>
-  <a href="https://opensource.org/licenses/GPL-3.0/"><img src="https://badges.frapsoft.com/os/gpl/gpl.svg?style=flat-square"></a>
-  <a href="https://github.com/Tomotoes/scrcpy-gui/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square"></a>
-</p>
+<br/>
 
-## 💡Introduction
+---
 
-<div align=center><img width="508" height="785.6" src="https://cdn.jsdelivr.net/gh/Tomotoes/images/scrcpy-gui/English.gif"/></div>
-<div align=center><img src="./screenshot.gif"/></div>
+## ✨ Highlights
 
+<table>
+<tr>
+<td width="50%" valign="top">
 
+### ⚡ Quick Connect
+One-tap pairing for **Android 11+** wireless debugging.
+Discover devices on your LAN via mDNS, pair with a 6-digit code, mirror in seconds.
 
-[Scrcpy](https://github.com/Genymobile/scrcpy) was created by the team behind the popular Android emulator Genymotion, but it is not an Android emulator itself, it displays and controls Android devices connected via USB or TCP/IP, it does not require any root access. It works with GNU/Linux, Windows, and MacOS.
+### 🎨 Native Dark UI
+A clean, modern dark theme with vibrancy effects.
+Built for macOS, fits right into Big Sur and later.
 
-Scrcpy works by running a server on your Android device, and the desktop application communicates using USB (or using ADB tunneling wireless). The server streams the H.264 video of the device screen. The client decodes the video frames and displays them. The client captures input (keyboard and mouse) events, sends them to the server, and the server injects them into the device. [The documentation](https://github.com/Genymobile/scrcpy/blob/master/DEVELOP.md) provides more details.
+### 🔌 Cable Optional
+Plug in for instant detection or stay wireless forever.
+Detects connected devices automatically.
 
-If you want to see your Android screen interact with the app or content on your desktop, record your phone screen or perform other basic tasks, then Scrcpy is a good choice.
+</td>
+<td width="50%" valign="top">
 
-In short, Scrcpy is an excellent way to easily view your Android screen on your computer and interact with it in real time.
+### 🎬 Full scrcpy Power
+Record, crop, rotate, control bitrate, FPS, resolution.
+All scrcpy options exposed through a clean form.
 
+### ⌨️ Keyboard & Mouse
+Type, click, swipe, copy/paste — your phone behaves like another window.
 
+### 🛡️ Safe & Sandboxed
+Input validation on every IPC call. No shell injection. No remote code paths.
 
-## ✨Features
+</td>
+</tr>
+</table>
 
-- **lightness** (native, displays only the device screen)
-- **performance** (30~60fps)
-- **quality** (1920×1080 or above)
-- **low latency** ([35~70ms](https://github.com/Genymobile/scrcpy/pull/646))
-- **low startup time** (~1 second to display the first image)
-- **non-intrusiveness** (nothing is left installed on the device)
-- **No need for ROOT**
-- **Wired and wireless can be connected**
-- **You can adjust the interface and bit rate**
-- **Pictures can be cut at will, with a screen recording**
-- **Support multiple devices to screen at the same time**
-- **Control your phone with your computer's keyboard and mouse**
-- **Mobile computer sharing clipboard**
-- **Automatically detect USB connected apps**
-- **Can directly add the LAN IP of the device to achieve the effect of wireless control**
-- **Automatically save the connected IP address, automatically reminder the next time you enter**
-- **Support device alias**
-- **Support for Chinese and English**
-- **Tray menu**
-- **etc...**
+<br/>
 
+---
 
+## 🚀 Quick Start
 
-## 🌞Requirements
+### Prerequisites
 
-1. The Android device requires at least API 21 (Android 5.0).
+```bash
+# Install scrcpy and adb (one-time setup)
+brew install scrcpy android-platform-tools
+```
 
-2. Make sure you [enabled adb debugging](https://developer.android.com/studio/command-line/adb.html#Enabling) on your device(s).
+> **Android 11+** users: enable **Wireless Debugging** in Developer Options.
+> **Android 5–10** users: enable **USB Debugging** and use the cable on first connection.
 
-   On some devices, you also need to enable [an additional option](https://github.com/Genymobile/scrcpy/issues/70#issuecomment-373286323) to control it using keyboard and mouse.
+### Install DroidScreen
 
-3. Install scrcpy and configure environment variables
+Download the latest `.app` from [**Releases**](https://github.com/8-BitBirdman/droidscreen/releases) and drag it to `/Applications`.
 
-   - Linux
+Or build from source — see [Development](#-development) below.
 
-     On Linux, you typically need to [build the app manually](https://github.com/Genymobile/scrcpy/blob/master/BUILD.md). Don't worry, it's not that hard.
+<br/>
 
-     A [Snap](https://en.wikipedia.org/wiki/Snappy_(package_manager)) package is available: [`scrcpy`](https://snapstats.org/snaps/scrcpy).
+---
 
-     For Arch Linux, an [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) package is available: [`scrcpy`](https://aur.archlinux.org/packages/scrcpy/).
+## 📱 Connecting Your Phone
 
-     For Gentoo, an [Ebuild](https://wiki.gentoo.org/wiki/Ebuild) is available: [`scrcpy/`](https://github.com/maggu2810/maggu2810-overlay/tree/master/app-mobilephone/scrcpy).
+### ⚡ Wireless (Android 11+) — _Recommended_
 
-   - Windows
+| Step | Action |
+|:----:|:-------|
+| 1 | Phone → **Settings → Developer Options → Wireless debugging → ON** |
+| 2 | Open DroidScreen → click **Scan for Devices** |
+| 3 | Tap **Pair**, enter the 6-digit code from your phone |
+| 4 | Done — auto-connects and stays paired |
 
-     For Windows, for simplicity, prebuilt archives with all the dependencies (including `adb`) are available:
+> 💡 _Same Wi-Fi network required. mDNS doesn't cross subnets._
 
-     - [`scrcpy-win32-v1.10.zip`](https://github.com/Genymobile/scrcpy/releases/download/v1.10/scrcpy-win32-v1.10.zip)
-       *(SHA-256: f98b400b3764404b33b212e9762dd6f1593ddb766c1480fc2609c94768e4a8e1)*
-     - [`scrcpy-win64-v1.10.zip`](https://github.com/Genymobile/scrcpy/releases/download/v1.10/scrcpy-win64-v1.10.zip)
-       *(SHA-256: 95de34575d873c7e95dfcfb5e74d0f6af4f70b2a5bc6fde0f48d1a05480e3a44)*
+### 🔌 USB
 
-     You can also [build the app manually](https://github.com/Genymobile/scrcpy/blob/master/BUILD.md).
+1. Plug your phone into your Mac
+2. Authorize the debug prompt on your phone
+3. Device appears automatically — click **Open Selected Mirror**
 
-   - macOS
+### 🌐 Manual IP (Legacy / Android ≤10)
 
-     The application is available in [Homebrew](https://brew.sh/). Just install it:
+1. Connect via USB once to enable `adb tcpip 5555`
+2. Click **▼ Manual IP connect** at the bottom of Devices
+3. Enter your phone's LAN IP → **Open wireless connection**
 
-     ```
-     brew install scrcpy
-     ```
+<br/>
 
-     You need `adb`, accessible from your `PATH`. If you don't have it yet:
+---
 
-     ```
-     brew cask install android-platform-tools
-     ```
+## ⌨️ Shortcuts
 
-     You can also [build the app manually](https://github.com/Genymobile/scrcpy/blob/master/BUILD.md).
+> When the scrcpy mirror window has focus.
 
+<details>
+<summary><b>📋 Click to expand full shortcut reference</b></summary>
 
+<br/>
 
-## 🎉Install
+| Action | macOS Shortcut |
+|:-------|:--------------:|
+| Switch fullscreen mode                   | `⌘ F` |
+| Resize window to 1:1 (pixel-perfect)     | `⌘ G` |
+| Resize window to remove black borders    | `⌘ X` · *Double-click* |
+| Click on **HOME**                        | `⌃ H` · *Middle-click* |
+| Click on **BACK**                        | `⌘ B` · *Right-click* |
+| Click on **APP_SWITCH**                  | `⌘ S` |
+| Click on **MENU**                        | `⌃ M` |
+| **VOLUME UP**                            | `⌘ ↑` |
+| **VOLUME DOWN**                          | `⌘ ↓` |
+| **POWER**                                | `⌘ P` |
+| Power on (when off)                      | *Right-click* |
+| Turn device screen off (keep mirroring)  | `⌘ O` |
+| Expand notification panel                | `⌘ N` |
+| Collapse notification panel              | `⌘ ⇧ N` |
+| Copy device clipboard → Mac              | `⌘ C` |
+| Paste Mac clipboard → device             | `⌘ V` |
+| Copy Mac clipboard → device              | `⌘ ⇧ V` |
+| Enable/disable FPS counter (stdout)      | `⌘ I` |
 
-Click here to download [App](https://github.com/Tomotoes/scrcpy-gui/releases).
+</details>
 
+<br/>
 
+---
 
-## 🎇Instructions
+## ⚙️ Configuration
 
-### connection method
+The **Configuration** tab exposes every scrcpy option:
 
-#### Prerequisites
+| Setting | What it does |
+|:--------|:-------------|
+| **scrcpy path** | Override location (leave blank if `scrcpy` is in your `PATH`) |
+| **Window title** | Custom title for the mirror window |
+| **Record screen** | Save mirror to `.mkv` file (with optional live preview) |
+| **Bit rate** | Video bitrate (default 8 Mbps — raise for better quality) |
+| **Max size** | Cap longest dimension (e.g. 1920) — `0` = native |
+| **Max FPS** | Cap framerate — `0` = unlimited |
+| **Rotation** | Force 0° / 90° / 180° / 270° |
+| **Crop** | Show only a region of the screen |
+| **Window position/size** | Pre-position mirror window |
+| **Always on top** | Pin mirror above other windows |
+| **Borderless** | Hide window chrome |
+| **Fullscreen** | Start fullscreen |
+| **Show touches** | Visualize taps on the device |
+| **Render expired frames** | Lower latency at cost of CPU |
+| **Stay awake** | Prevent screen sleep while mirroring |
+| **Auto-open** | Automatically mirror when device connects |
+| **Hide on close** | Minimize to tray instead of quitting |
 
-- Make sure **adb , scrcpy** are working properly
-- Make sure the phone is turned on for USB debugging and certified for computer debugging
+<br/>
 
-#### Wired connection
+---
 
-1. Make sure the phone is connected to the computer via the data cable
+## 🛠 Development
 
-2. Wait for the software to automatically detect the device
-3. Select the device and click `Open Selected Mirror`.
-4. Wait for the device to open
+Built with **Electron 13 + Vue 2 + Element UI**, bundled by **Webpack**.
 
-#### Wireless connections
-
-1. Please make sure the phone is on the same LAN as the computer.
-2. When connecting for the first time:
-   - **Please make sure your phone is connected to your computer via the cable**
-   - **Please make sure that only one mobile phone is connected to the computer via the data cable**
-   - The first time you need to set the port, you can connect to the phone later, just add the static IP of the phone.
-3. Enter the LAN IP address of the phone (if the IP is DHCP assigned, please change to static IP)
-4. Click `Open wireless connection`
-5. Waiting for the wireless connection to succeed
-6. Select the device and click `Open Selected Mirror`.
-7. Wait for the device to open
-
-
-
-## Shortcuts
-
-| Action                                  | Shortcut                      | Shortcut (macOS)             |
-| --------------------------------------- | ----------------------------- | ---------------------------- |
-| Switch fullscreen mode                  | `Ctrl`+`f`                    | `Cmd`+`f`                    |
-| Resize window to 1:1 (pixel-perfect)    | `Ctrl`+`g`                    | `Cmd`+`g`                    |
-| Resize window to remove black borders   | `Ctrl`+`x` \| *Double-click¹* | `Cmd`+`x` \| *Double-click¹* |
-| Click on `HOME`                         | `Ctrl`+`h` \| *Middle-click*  | `Ctrl`+`h` \| *Middle-click* |
-| Click on `BACK`                         | `Ctrl`+`b` \| *Right-click²*  | `Cmd`+`b` \| *Right-click²*  |
-| Click on `APP_SWITCH`                   | `Ctrl`+`s`                    | `Cmd`+`s`                    |
-| Click on `MENU`                         | `Ctrl`+`m`                    | `Ctrl`+`m`                   |
-| Click on `VOLUME_UP`                    | `Ctrl`+`↑` *(up)*             | `Cmd`+`↑` *(up)*             |
-| Click on `VOLUME_DOWN`                  | `Ctrl`+`↓` *(down)*           | `Cmd`+`↓` *(down)*           |
-| Click on `POWER`                        | `Ctrl`+`p`                    | `Cmd`+`p`                    |
-| Power on                                | *Right-click²*                | *Right-click²*               |
-| Turn device screen off (keep mirroring) | `Ctrl`+`o`                    | `Cmd`+`o`                    |
-| Expand notification panel               | `Ctrl`+`n`                    | `Cmd`+`n`                    |
-| Collapse notification panel             | `Ctrl`+`Shift`+`n`            | `Cmd`+`Shift`+`n`            |
-| Copy device clipboard to computer       | `Ctrl`+`c`                    | `Cmd`+`c`                    |
-| Paste computer clipboard to device      | `Ctrl`+`v`                    | `Cmd`+`v`                    |
-| Copy computer clipboard to device       | `Ctrl`+`Shift`+`v`            | `Cmd`+`Shift`+`v`            |
-| Enable/disable FPS counter (on stdout)  | `Ctrl`+`i`                    | `Cmd`+`i`                    |
-
-*¹Double-click on black borders to remove them.*
-*²Right-click turns the screen on if it was off, presses BACK otherwise.*
-
-
-
-## 🎯Develop
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[8fae476](https://github.com/SimulatedGREG/electron-vue/tree/8fae4763e9d225d3691b627e83b9e09b56f6c935) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
-
-Feel free to open issues or PRs for any problem you may encounter, typos that you see or aspects that are confusing. Contributions are welcome, open an issue or email me if you have something you want to work on.
-
-``` bash
-# install dependencies
+```bash
+# Clone & install
+git clone https://github.com/8-BitBirdman/droidscreen
+cd droidscreen
 npm install
 
-# serve with hot reload at localhost:9080
+# Dev mode (hot reload, devtools)
 npm run dev
 
-# build electron application for production
+# Production build → build/mac/DroidScreen.app
 npm run build
 
-# lint all JS/Vue component files in `src/`
+# Lint
 npm run lint
 ```
 
+### Project Structure
 
+```
+src/
+├── main/                  # Electron main process
+│   ├── index.js           # App lifecycle, IPC registration
+│   ├── adb/               # ADB tracker, mDNS, pair, connect
+│   └── scrcpy/            # scrcpy spawner with full arg builder
+└── renderer/              # Vue app
+    ├── components/
+    │   ├── dashboard/     # Configuration & device Management
+    │   ├── layout/        # Header / Footer
+    │   └── menu/          # Tray + titlebar menus
+    ├── lang/              # i18n (English)
+    ├── plugins/           # Vue plugins (store, notify, openExternal)
+    └── styles/            # Global SCSS + dark theme overrides
+```
 
-## 👀Reward
+### Architecture
 
-If you like `scrcpy-gui` and it really helps you, please give me a cup of coffee~
+```
+┌──────────────────┐  IPC   ┌──────────────────┐  spawn  ┌──────────┐
+│  Renderer (Vue)  │ ◄────► │   Main (Node)    │ ──────► │  scrcpy  │
+│   Management.vue │        │  adb / scrcpy    │         │   adb    │
+└──────────────────┘        └──────────────────┘         └──────────┘
+        │                            │
+        │                            └─► adbkit (TCP)
+        └─► @electron/remote (titlebar, menus)
+```
 
-paypal: [https://paypal.me/tomotoes](https://paypal.me/tomotoes)
+<br/>
 
-[![Alipay：](https://camo.githubusercontent.com/f4874996db5ac421925db08778d800d76d36abbc/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2545362539342541462545342542422539382545352541452539442d25453525393025393154412545362538442539302545352538412541392d677265656e2e737667)](https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/alipay.png)[![Wechat：](https://camo.githubusercontent.com/26101aa838286ad0d45a6f71b25fdc6e14e7668c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2545352542452541452545342542462541312d25453525393025393154412545362538442539302545352538412541392d677265656e2e737667)](https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/wechat.png)
+---
 
+## 🔐 Security Notes
 
-## 📃License
+- **All IPC inputs validated** — addresses match `host:port`, codes are 6 digits
+- **No shell interpolation** — uses `execFile`, not `exec`, for `adb` calls
+- **Mac-only** by design — Windows/Linux paths and binaries removed
+- **No telemetry. No tracking. No network calls** beyond your own LAN
 
-**GNU GPLv3**
+<br/>
+
+---
+
+## 🐛 Troubleshooting
+
+<details>
+<summary><b>Phone not appearing when scanning</b></summary>
+
+- Verify Wireless Debugging is **ON** (not just Developer Options enabled)
+- Confirm Mac and phone are on the same Wi-Fi (mDNS won't traverse VLANs)
+- Some routers block mDNS / multicast — try disabling **AP Isolation**
+- Run `adb mdns services` in Terminal — if empty, it's a network issue, not the app
+</details>
+
+<details>
+<summary><b>Pairing fails repeatedly</b></summary>
+
+- The pairing code expires fast — enter it within ~30 seconds
+- The pairing port changes every time you toggle Wireless Debugging — re-scan
+- Make sure no other tool (Android Studio, Vysor) is holding the adb server
+</details>
+
+<details>
+<summary><b>"scrcpy not found" error</b></summary>
+
+- Confirm install: `which scrcpy` should print a path
+- If installed but not found, set the **scrcpy path** explicitly in Configuration
+- macOS apps inherit a limited `PATH` — Homebrew paths usually work via `fix-path`
+</details>
+
+<details>
+<summary><b>Mirror window opens but is black/laggy</b></summary>
+
+- Lower the bit rate or max size in Configuration
+- Disable **Render expired frames**
+- Check `~/Library/Logs/DroidScreen/` for scrcpy stdout
+</details>
+
+<br/>
+
+---
+
+## 🤝 Contributing
+
+Pull requests welcome. For substantial changes, open an issue first to discuss direction.
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feat/my-feature`)
+3. Run `npm run lint` before committing
+4. Open a PR with a clear description
+
+<br/>
+
+---
+
+## 📜 Credits
+
+- [**scrcpy**](https://github.com/Genymobile/scrcpy) by Genymobile — the engine that makes it all possible
+- [**adbkit**](https://github.com/openstf/adbkit) — Node.js ADB client
+- [**Electron**](https://electronjs.org) + [**Vue**](https://vuejs.org) + [**Element UI**](https://element.eleme.io)
+
+<br/>
+
+---
+
+## 📃 License
+
+[**Apache 2.0**](LICENSE)
+
+<br/>
+
+<div align="center">
+
+**Made with ☕ for the Android-on-Mac crowd.**
+
+If DroidScreen saves you a USB cable, consider giving it a ⭐
+
+</div>

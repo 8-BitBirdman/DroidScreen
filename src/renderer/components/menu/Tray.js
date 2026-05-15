@@ -1,4 +1,4 @@
-import { remote } from 'electron'
+const remote = require('@electron/remote')
 const { Tray, getCurrentWindow } = remote
 const window = getCurrentWindow()
 const tray = new Tray(`${__static}/icons/16x16.png`)
@@ -11,8 +11,8 @@ export default Menu => {
 	})
 
 	tray.setContextMenu(menu)
-	tray.setTitle('Scrcpy')
-	tray.setToolTip('Scrcpy')
+	tray.setTitle('DroidScreen')
+	tray.setToolTip('DroidScreen')
 	tray.on('right-click', () => {
 		tray.popUpContextMenu(menu)
 	})

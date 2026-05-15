@@ -1,6 +1,6 @@
 import LocalStorage from 'localstorage'
 const { version } = require('../../../package.json')
-const store = new LocalStorage(`scrcpy@${version}`)
+const store = new LocalStorage(`droidscreen@${version}`)
 
 export default {
 	install(Vue) {

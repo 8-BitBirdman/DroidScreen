@@ -1,17 +1,6 @@
 <template>
 	<el-footer>
-		<span
-			>{{$t('footer.powerBy')}}
-			<a
-				@click="$openExternal('https://electronjs.org')"
-				class="footer-link"
-				>Electron</a
-			>
-			&nbsp;❤ &nbsp; {{$t('footer.author')}} -
-			<a @click="$openExternal('https://tomotoes.com')" class="footer-link"
-				>Simon Ma</a
-			></span
-		>
+		<span>Powered by <a @click="$openExternal('https://electronjs.org')" class="footer-link">Electron</a> &amp; <a @click="$openExternal('https://github.com/Genymobile/scrcpy')" class="footer-link">scrcpy</a> &nbsp;— DroidScreen</span>
 	</el-footer>
 </template>
 
@@ -24,26 +13,21 @@ export default {
 <style>
 .el-footer {
 	height: 7vh !important;
-	background-image: linear-gradient(
-		-90deg,
-		#bfbfbf 0%,
-		#7d7d7d 20%,
-		#7d7d7d 80%,
-		#bfbfbf 100%
-	);
-	border-top: 5px solid #e0e2e6;
+	background-color: #0d0d0d;
+	border-top: 1px solid #222;
 	clear: both;
 	overflow: hidden;
 	line-height: 7vh;
-	font-size: 17px;
+	font-size: 15px;
 	text-align: center;
-	text-shadow: 1px 0px 10px #484444;
-	color: #f7f7f7;
+	color: #888;
 }
 .footer-link {
 	transition: all 0.3s;
+	color: #aaa;
 }
 .footer-link:hover {
-	font-size: 18.5px;
+	font-size: 16px;
+	color: #fff;
 }
 </style>

@@ -1,65 +1,24 @@
 const pkg = require('../../../../package')
-import { remote } from 'electron'
+const remote = require('@electron/remote')
 const { Menu, MenuItem } = remote
 
 export default (vue) => (tray, ...items) => {
 	const menu = new Menu()
 	menu.append(new MenuItem({
 		label: vue.$t('titleBar.document'),
-		click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui')
+		click: () => remote.shell.openExternal('https://github.com/8-BitBirdman/droidscreen')
 	}))
 
 	menu.append(new MenuItem({
 		label: vue.$t('titleBar.checkForUpdates'),
-		click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui/releases')
+		click: () => remote.shell.openExternal('https://github.com/8-BitBirdman/droidscreen/releases')
 	}))
 
 	menu.append(new MenuItem({
 		label: vue.$t('titleBar.feedback'),
-		click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui/issues')
+		click: () => remote.shell.openExternal('https://github.com/8-BitBirdman/droidscreen/issues')
 	}))
-	const submenu = []
-	if (!items.length) {
-		submenu.push({
-			label: 'Supported languages: '
-		})
-	}
-	submenu.push({
-		label: '- English',
-		click: () => {
-			localStorage.setItem('lang', 'en')
-			tray.destroy()
-			window.location.reload()
-		}
-	})
-	submenu.push({
-		type: 'separator'
-	})
-	submenu.push(
-		{
-			label: '- 简体中文',
-			click: () => {
-				localStorage.setItem('lang', 'zhCN')
-				tray.destroy()
-				window.location.reload()
-			}
-		})
-	submenu.push({
-		type: 'separator'
-	})
-	submenu.push(
-		{
-			label: '- 繁体中文',
-			click: () => {
-				localStorage.setItem('lang', 'zhTW')
-				tray.destroy()
-				window.location.reload()
-			}
-		})
-	menu.append(new MenuItem({
-		label: vue.$t('titleBar.switchLanguage'),
-		submenu
-	}))
+
 	const about = []
 	about.push(`name: ${pkg.name}`)
 	about.push(`version: ${pkg.version}`)
@@ -73,7 +32,7 @@ export default (vue) => (tray, ...items) => {
 	menu.append(new MenuItem({
 		label: vue.$t('titleBar.about'),
 		click: () => {
-			vue.$alert(about.join('<br/>'), 'Scrcpy-gui', {
+			vue.$alert(about.join('<br/>'), 'DroidScreen', {
 				dangerouslyUseHTMLString: true,
 			})
 		}

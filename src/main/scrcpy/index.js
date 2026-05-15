@@ -2,6 +2,7 @@ const debug = require('debug')('scrcpy')
 const fixPath = require('fix-path')
 fixPath()
 const fs = require('fs')
+const path = require('path')
 const open = ({ sender }, options) => {
 	const args = []
 	const { config, devices } = options
@@ -10,7 +11,8 @@ const open = ({ sender }, options) => {
 
 	let cmd = 'scrcpy'
 	if (source) {
-		const scrcpyPath = `${source}\\scrcpy.exe`
+		const binName = process.platform === 'win32' ? 'scrcpy.exe' : 'scrcpy'
+		const scrcpyPath = path.join(source, binName)
 		if (!fs.existsSync(scrcpyPath)) {
 			sender.send('error', { type: 'unknownScrcpyPathException' })
 			return

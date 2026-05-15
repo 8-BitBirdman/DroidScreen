@@ -17,7 +17,6 @@ const { VueLoaderPlugin } = require('vue-loader')
  *
  * Required for specific packages like Vue UI libraries
  * that provide pure *.vue files that need compiling
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue','element-ui']
 

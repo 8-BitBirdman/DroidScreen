@@ -1,43 +1,90 @@
 <template>
 	<el-card>
-		<div class="wrap-form">
-			<el-divider content-position="center">{{
-				$t("management.ip.tip")
-			}}</el-divider>
-			<el-autocomplete
-				v-model="ip"
-				:fetch-suggestions="getWirelessDevices"
-				prefix-icon="el-icon-position"
-				@select="handleSelect"
-			>
-				<template slot-scope="{ item }">
-					<div class="item-name">
-						<span style="color:#999">{{ $t("management.devices.name") }}: </span
-						>{{ item.name }}
-					</div>
-					<span class="item-id">{{ item.id }}</span>
-					<el-button
-						class="item-remove"
-						@click.native.prevent="deleteWirelessDevice(item.id)"
-						type="text"
-						size="small"
-					>
-						{{ $t("management.ip.remove") }}
-					</el-button>
-				</template>
-			</el-autocomplete>
-			<br />
-			<br />
+
+		<!-- ───────────────── QUICK CONNECT ───────────────── -->
+		<div class="quick-connect">
+			<div class="qc-header">
+				<span class="qc-title">⚡ {{ $t('quickConnect.title') }}</span>
+				<span class="qc-subtitle">{{ $t('quickConnect.subtitle') }}</span>
+			</div>
+
 			<el-button
-				type="success"
-				@click.native.prevent="connect"
-				:disabled="ip === ''"
-				plain
-				v-waves
-				>{{ $t("management.ip.connect") }}</el-button
+				class="qc-scan-btn"
+				:loading="scanning"
+				@click="scanDevices"
+				size="small"
+				round
 			>
+				{{ scanning ? $t('quickConnect.scanning') : $t('quickConnect.scan') }}
+			</el-button>
+
+			<div v-if="scanned && mdnsDevices.length === 0" class="qc-empty">
+				{{ $t('quickConnect.noDevices') }}
+			</div>
+
+			<div v-if="mdnsDevices.length > 0" class="qc-device-list">
+				<div
+					v-for="device in mdnsDevices"
+					:key="device.serial"
+					class="qc-device-row"
+				>
+					<div class="qc-device-info">
+						<span class="qc-device-icon">📱</span>
+						<div>
+							<span class="qc-device-name">{{ device.name }}</span>
+							<span class="qc-device-addr" v-if="device.connectAddr">{{ device.connectAddr }}</span>
+						</div>
+					</div>
+					<div class="qc-device-actions">
+						<el-button
+							v-if="device.pairAddr"
+							size="mini"
+							type="warning"
+							plain
+							@click="openPairDialog(device)"
+						>{{ pairedSerials.includes(device.serial) ? $t('quickConnect.paired') : $t('quickConnect.pair') }}</el-button>
+						<el-button
+							v-if="device.connectAddr"
+							size="mini"
+							type="success"
+							plain
+							:loading="connectingSerial === device.serial"
+							@click="quickConnectDevice(device)"
+						>{{ $t('quickConnect.connect') }}</el-button>
+					</div>
+				</div>
+			</div>
 		</div>
 
+		<!-- ───────────────── PAIR DIALOG ───────────────── -->
+		<el-dialog
+			:title="$t('quickConnect.pairDialog.title')"
+			:visible.sync="pairDialogVisible"
+			width="360px"
+			class="pair-dialog"
+			:append-to-body="true"
+		>
+			<p class="pair-hint">{{ $t('quickConnect.pairDialog.hint') }}</p>
+			<el-input
+				v-model="pairingCode"
+				:placeholder="$t('quickConnect.pairDialog.placeholder')"
+				maxlength="6"
+				size="medium"
+				autofocus
+				@keyup.enter.native="submitPair"
+			/>
+			<span slot="footer">
+				<el-button @click="pairDialogVisible = false">{{ $t('quickConnect.pairDialog.cancel') }}</el-button>
+				<el-button
+					type="primary"
+					:loading="pairing"
+					:disabled="pairingCode.length < 6"
+					@click="submitPair"
+				>{{ $t('quickConnect.pairDialog.confirm') }}</el-button>
+			</span>
+		</el-dialog>
+
+		<!-- ───────────────── DEVICE LIST ───────────────── -->
 		<el-divider><i class="el-icon-mobile-phone"></i></el-divider>
 		<div v-if="currentDevices.length > 0">
 			<el-table
@@ -131,6 +178,46 @@
 		<div class="when-empty" v-else>
 			<span> {{ $t("management.whenEmpty") }} </span>
 		</div>
+
+		<!-- ───────────────── MANUAL IP (collapsed) ───────────────── -->
+		<el-divider content-position="right">
+			<el-button type="text" size="mini" @click="showManual = !showManual">
+				{{ showManual ? $t('quickConnect.hideManual') : $t('quickConnect.showManual') }}
+			</el-button>
+		</el-divider>
+		<div v-if="showManual" class="wrap-form">
+			<el-autocomplete
+				v-model="ip"
+				:fetch-suggestions="getWirelessDevices"
+				prefix-icon="el-icon-position"
+				@select="handleSelect"
+			>
+				<template slot-scope="{ item }">
+					<div class="item-name">
+						<span style="color:#999">{{ $t("management.devices.name") }}: </span
+						>{{ item.name }}
+					</div>
+					<span class="item-id">{{ item.id }}</span>
+					<el-button
+						class="item-remove"
+						@click.native.prevent="deleteWirelessDevice(item.id)"
+						type="text"
+						size="small"
+					>
+						{{ $t("management.ip.remove") }}
+					</el-button>
+				</template>
+			</el-autocomplete>
+			<br /><br />
+			<el-button
+				type="success"
+				@click.native.prevent="connect"
+				:disabled="ip === ''"
+				plain
+				v-waves
+				>{{ $t("management.ip.connect") }}</el-button
+			>
+		</div>
 	</el-card>
 </template>
 
@@ -151,7 +238,18 @@ export default {
 			stoppedNotify: false,
 			firstLoad: true,
 			wired: '',
-			wireless: ''
+			wireless: '',
+			showManual: false,
+			// Quick Connect
+			scanning: false,
+			scanned: false,
+			mdnsDevices: [],
+			pairedSerials: [],
+			pairDialogVisible: false,
+			pairingCode: '',
+			pairing: false,
+			pendingPairDevice: null,
+			connectingSerial: null
 		}
 	},
 	created() {
@@ -160,13 +258,15 @@ export default {
 		const { wireless, wired } = this
 
 		this.wirelessDevices = this.$store.get('wirelessDevices') || []
+		this.pairedSerials = this.$store.get('pairedSerials') || []
+
 		ipcRenderer.on('devices', (event, _devices) => {
 			const preDevicesCount = this.currentDevices.length
 			const devices = _devices
 				.filter(({ id }, idx) => _devices.findIndex((device) => id === device.id) === idx)
 				.map(({ id }) => ({ id, name: this.$store.get(id) || id, method: Regular('ip', id) ? wireless : wired }))
 
-			if(this.$store.get('config').auto){
+			if(this.$store.get('config') && this.$store.get('config').auto){
 				const newDevices = devices.filter(device => !this.currentDevices.some(({id}) => id === device.id))
 				this.open(newDevices)
 			}
@@ -221,6 +321,50 @@ export default {
 			console.log(`management.error.${ type}`)
 			this.$notify.error(this.$t(`management.error.${ type}`))
 		})
+
+		// Quick Connect IPC listeners
+		ipcRenderer.on('mdns', (_, { success, devices }) => {
+			this.scanning = false
+			this.scanned = true
+			this.mdnsDevices = success ? devices : []
+		})
+
+		ipcRenderer.on('pair', (_, { success }) => {
+			this.pairing = false
+			if (success) {
+				this.$notify.success(this.$t('quickConnect.pairSuccess'))
+				if (this.pendingPairDevice) {
+					// Save paired serial so UI can reflect it
+					if (!this.pairedSerials.includes(this.pendingPairDevice.serial)) {
+						this.pairedSerials.push(this.pendingPairDevice.serial)
+						this.$store.put('pairedSerials', this.pairedSerials)
+					}
+					// Auto-connect after pairing
+					if (this.pendingPairDevice.connectAddr) {
+						this.quickConnectDevice(this.pendingPairDevice)
+					}
+					this.pendingPairDevice = null
+				}
+				this.pairDialogVisible = false
+				this.pairingCode = ''
+			} else {
+				this.$notify.error(this.$t('quickConnect.pairFail'))
+			}
+		})
+
+		ipcRenderer.on('connectDirect', (_, { success }) => {
+			this.connectingSerial = null
+			if (success) {
+				this.$notify.success(this.$t('quickConnect.connectSuccess'))
+			} else {
+				this.$notify.error(this.$t('quickConnect.connectFail'))
+			}
+		})
+	},
+	beforeDestroy() {
+		['devices', 'open', 'close', 'error', 'mdns', 'pair', 'connectDirect'].forEach(ch => {
+			ipcRenderer.removeAllListeners(ch)
+		})
 	},
 	components: {
 		EditableCell
@@ -259,6 +403,30 @@ export default {
 			setTimeout(() => {
 				this.stoppedNotify = false
 			}, 2000)
+		},
+		// Quick Connect methods
+		scanDevices() {
+			this.scanning = true
+			this.scanned = false
+			this.mdnsDevices = []
+			ipcRenderer.send('mdns')
+		},
+		openPairDialog(device) {
+			this.pendingPairDevice = device
+			this.pairingCode = ''
+			this.pairDialogVisible = true
+		},
+		submitPair() {
+			if (this.pairingCode.length < 6 || !this.pendingPairDevice) return
+			this.pairing = true
+			ipcRenderer.send('pair', {
+				addr: this.pendingPairDevice.pairAddr,
+				code: this.pairingCode
+			})
+		},
+		quickConnectDevice(device) {
+			this.connectingSerial = device.serial
+			ipcRenderer.send('connectDirect', { addr: device.connectAddr })
 		},
 		getWirelessDevices(queryString, cb) {
 			const wirelessDevices = this.wirelessDevices
@@ -305,6 +473,101 @@ export default {
 .el-card__body {
 	padding: 12px !important;
 }
+/* ── Quick Connect ─────────────────────────── */
+.quick-connect {
+	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+	border: 1px solid #0f3460;
+	border-radius: 10px;
+	padding: 16px;
+	margin-bottom: 16px;
+}
+.qc-header {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 12px;
+}
+.qc-title {
+	font-size: 15px;
+	font-weight: 600;
+	color: #e0e0e0;
+	letter-spacing: 0.5px;
+}
+.qc-subtitle {
+	font-size: 11px;
+	color: #666;
+	margin-top: 3px;
+}
+.qc-scan-btn {
+	margin-bottom: 12px;
+}
+.qc-empty {
+	font-size: 12px;
+	color: #666;
+	text-align: center;
+	padding: 10px 0;
+}
+.qc-device-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.qc-device-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: rgba(255,255,255,0.04);
+	border: 1px solid #2a2a3a;
+	border-radius: 8px;
+	padding: 10px 12px;
+	transition: border-color 0.2s;
+}
+.qc-device-row:hover {
+	border-color: #0f3460;
+}
+.qc-device-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.qc-device-icon {
+	font-size: 22px;
+}
+.qc-device-name {
+	display: block;
+	font-size: 13px;
+	color: #ddd;
+	font-weight: 500;
+}
+.qc-device-addr {
+	display: block;
+	font-size: 11px;
+	color: #666;
+	margin-top: 2px;
+}
+.qc-device-actions {
+	display: flex;
+	gap: 6px;
+}
+/* ── Pair dialog ─────────────────────────── */
+.pair-dialog .el-dialog {
+	background: #1e1e1e !important;
+	border: 1px solid #333 !important;
+	border-radius: 10px !important;
+}
+.pair-dialog .el-dialog__title {
+	color: #e0e0e0 !important;
+}
+.pair-dialog .el-dialog__header,
+.pair-dialog .el-dialog__footer {
+	border-color: #333 !important;
+}
+.pair-hint {
+	font-size: 12px;
+	color: #888;
+	margin: 0 0 12px;
+	line-height: 1.5;
+}
+/* ── Device table ─────────────────────────── */
 .wrap-button {
 	text-align: center;
 	margin: 20px auto;
@@ -312,9 +575,6 @@ export default {
 .wrap-form {
 	text-align: center;
 	margin-bottom: 20px;
-}
-.display {
-	display: none;
 }
 .item-id {
 	font-size: 14px;

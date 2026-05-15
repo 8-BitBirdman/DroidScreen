@@ -276,9 +276,6 @@
 					}}</el-checkbox>
 				</el-tooltip>
 			</el-form-item>
-			<el-divider content-position="right">
-				<el-button type="text" @click="changeLocale">简/繁/English</el-button>
-			</el-divider>
 			<div style="margin:10px auto;text-align:center">
 				<el-button type="primary" @click.native.prevent="save" plain v-waves>{{
 					$t("configuration.button.save")
@@ -307,7 +304,7 @@ export default {
 				record: {
 					open: false,
 					openMirror: true,
-					filepath: "C:/users/user/Desktop/file.mkv"
+					filepath: "~/Desktop/recording.mkv"
 				},
 
 				screen: false,
@@ -393,7 +390,7 @@ export default {
 				record: {
 					open: false,
 					openMirror: true,
-					filepath: "C:/users/user/Desktop/file.mkv"
+					filepath: "~/Desktop/recording.mkv"
 				},
 
 				screen: false,
@@ -424,17 +421,6 @@ export default {
 				}
 			};
 			this.$store.put("config", this.config);
-		},
-		changeLocale() {
-			let nextLang = "en";
-			if (this.$i18n.locale === "zhCN") {
-				nextLang = "zhTW";
-			} else if (this.$i18n.locale === "en") {
-				nextLang = "zhCN";
-			}
-			localStorage.setItem("lang", nextLang);
-			window.tray.destroy();
-			window.location.reload();
 		}
 	}
 };
