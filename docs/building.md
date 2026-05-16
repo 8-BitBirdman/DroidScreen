@@ -2,18 +2,18 @@
 
 ## Prerequisites
 
-- **Node.js** 16 or 18 (electron-vue tooling is finicky on 20+)
+- **Node.js** 18 or 20
 - **npm** 8+
-- **macOS** 10.15 or later
+- **macOS** 11 (Big Sur) or later — Apple Silicon (arm64)
 - Xcode Command Line Tools: `xcode-select --install`
 
 ## Install Dependencies
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
-This will also run `npm run lint:fix` as a `postinstall` hook.
+`--legacy-peer-deps` required: some transitive deps lag behind Electron 28 peer ranges.
 
 ## Development
 
@@ -34,19 +34,22 @@ mainWindow.webContents.openDevTools()
 ## Production Build
 
 ```bash
-npm run build
+npm run pack:main
+npm run pack:renderer
+npx electron-builder --mac --arm64 --publish=never
 ```
 
 Output:
 
 ```
 build/
-├── DroidScreen-1.5.1.zip          # distributable archive
-├── mac/
-│   └── DroidScreen.app             # the actual app bundle
-├── builder-debug.yml
-└── icons/
+├── DroidScreen-1.5.1-arm64-mac.zip   # distributable archive
+├── mac-arm64/
+│   └── DroidScreen.app                # the actual app bundle (arm64)
+└── builder-debug.yml
 ```
+
+> **Note**: arm64-only build. For universal (Intel + Apple Silicon), add `--x64 --arm64` and ensure all native deps support both archs.
 
 ## Packaging Targets
 
@@ -56,7 +59,6 @@ To re-enable DMG, edit `package.json`:
 
 ```json
 "mac": {
-  "icon": "build/icons/icon.icns",
   "target": ["zip", "dmg"]
 }
 ```
@@ -106,5 +108,5 @@ Webpack 4 ships an old `chokidar`. We override it via `package.json > overrides`
 ### Renderer fails to load `@electron/remote`
 
 - Confirm it's installed: `npm ls @electron/remote`
-- Confirm `nodeIntegration: true` and `enableRemoteModule: true` in `BrowserWindow` options
-- Confirm `remoteMain.enable(mainWindow.webContents)` is called before `loadURL`
+- Confirm `nodeIntegration: true` and `contextIsolation: false` in `BrowserWindow` options (Electron 28 removed `enableRemoteModule`)
+- Confirm `remote.initialize()` is called once, and `remote.enable(mainWindow.webContents)` is called before `loadURL`

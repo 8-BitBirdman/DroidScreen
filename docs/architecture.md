@@ -99,7 +99,7 @@ A form binding every scrcpy option to a Vuex-like store (backed by `localstorage
 - `webpack.main.config.js` → `dist/electron/main.js` (Node target)
 - `webpack.renderer.config.js` → `dist/electron/renderer.js` (Electron renderer)
 
-`electron-builder` then packages the result into `build/mac/DroidScreen.app` and a `.zip`.
+`electron-builder` then packages the result into `build/mac-arm64/DroidScreen.app` and a `.zip`.
 
 ## State Flow
 
@@ -122,10 +122,10 @@ Renderer: ipcRenderer.on('mdns') → update mdnsDevices array
 Vue reactive UI re-renders
 ```
 
-## Why Electron 13 (not latest)?
+## Why Electron 28 (LTS)?
 
-- `custom-electron-titlebar` v3 is not compatible with Electron ≥14
-- `@electron/remote` migration path simpler from 12 → 13 than 13 → 22+
-- Tray + vibrancy APIs are stable here
-
-A future upgrade path would replace `custom-electron-titlebar` with the native frameless window approach in Electron 22+.
+- Native Apple Silicon (arm64) support — required for macOS 26+ on M-series Macs
+- LTS release line, security patches through 2025
+- `@electron/remote` v2 still compatible
+- Native `titleBarStyle: 'hiddenInset'` replaces deprecated `custom-electron-titlebar`
+- `enableRemoteModule` removed; `@electron/remote` initialized via `remote.initialize()` + `remote.enable(webContents)`

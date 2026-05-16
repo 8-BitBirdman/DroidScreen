@@ -32,30 +32,15 @@
 		"files": [
 			"dist/electron/**/*"
 		],
-		"dmg": {
-			"contents": [
-				{
-					"x": 410,
-					"y": 150,
-					"type": "link",
-					"path": "/Applications"
-				},
-				{
-					"x": 130,
-					"y": 150,
-					"type": "file"
-				}
-			]
-		},
 		"mac": {
-			"icon": "build/icons/icon.icns",
-			"target": ["zip"]
+			"target": [
+				"zip"
+			]
 		}
 	},
 	"dependencies": {
-		"adbkit": "^2.11.1",
 		"@electron/remote": "^2.0.8",
-		"custom-electron-titlebar": "^3.2.2",
+		"adbkit": "^2.11.1",
 		"debug": "^4.1.1",
 		"element-ui": "^2.11.1",
 		"fix-path": "^3.0.0",
@@ -84,8 +69,8 @@
 		"css-loader": "^0.28.11",
 		"del": "^3.0.0",
 		"devtron": "^1.4.0",
-		"electron": "^13.6.9",
-		"electron-builder": "^20.19.2",
+		"electron": "^28.3.3",
+		"electron-builder": "^26.8.1",
 		"electron-debug": "^1.5.0",
 		"electron-devtools-installer": "^2.2.4",
 		"eslint": "^4.19.1",

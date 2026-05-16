@@ -1,7 +1,7 @@
 const remote = require('@electron/remote')
-const { Tray, getCurrentWindow } = remote
+const { Tray, getCurrentWindow, nativeImage } = remote
 const window = getCurrentWindow()
-const tray = new Tray(`${__static}/icons/16x16.png`)
+const tray = new Tray(nativeImage.createEmpty())
 
 export default Menu => {
 	const menu = Menu(tray,{ label: 'tray.hide', click() { window.hide() } }, {

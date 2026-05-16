@@ -2,8 +2,6 @@
 
 <br/>
 
-<img src="static/icons/256x256.png" width="128" height="128" alt="DroidScreen" />
-
 # DroidScreen
 
 ### Mirror, control and record your Android device on macOS — wirelessly.
@@ -12,7 +10,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-3a7afe.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 [![Release](https://img.shields.io/github/v/release/8-BitBirdman/droidscreen?style=for-the-badge&color=67c23a)](https://github.com/8-BitBirdman/droidscreen/releases)
-[![Platform](https://img.shields.io/badge/platform-macOS-1d1d1f?style=for-the-badge&logo=apple)](https://github.com/8-BitBirdman/droidscreen/releases)
+[![Platform](https://img.shields.io/badge/platform-macOS%20arm64-1d1d1f?style=for-the-badge&logo=apple)](https://github.com/8-BitBirdman/droidscreen/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff6b6b?style=for-the-badge)](https://github.com/8-BitBirdman/droidscreen/pulls)
 
 <br/>
@@ -183,19 +181,20 @@ The **Configuration** tab exposes every scrcpy option:
 
 ## 🛠 Development
 
-Built with **Electron 13 + Vue 2 + Element UI**, bundled by **Webpack**.
+Built with **Electron 28 + Vue 2 + Element UI**, bundled by **Webpack**. Native Apple Silicon (arm64).
 
 ```bash
 # Clone & install
 git clone https://github.com/8-BitBirdman/droidscreen
 cd droidscreen
-npm install
+npm install --legacy-peer-deps
 
 # Dev mode (hot reload, devtools)
 npm run dev
 
-# Production build → build/mac/DroidScreen.app
-npm run build
+# Production build → build/mac-arm64/DroidScreen.app
+npm run pack:main && npm run pack:renderer
+npx electron-builder --mac --arm64 --publish=never
 
 # Lint
 npm run lint
@@ -213,7 +212,7 @@ src/
     ├── components/
     │   ├── dashboard/     # Configuration & device Management
     │   ├── layout/        # Header / Footer
-    │   └── menu/          # Tray + titlebar menus
+    │   └── menu/          # Tray + app menus
     ├── lang/              # i18n (English)
     ├── plugins/           # Vue plugins (store, notify, openExternal)
     └── styles/            # Global SCSS + dark theme overrides
@@ -228,7 +227,7 @@ src/
 └──────────────────┘        └──────────────────┘         └──────────┘
         │                            │
         │                            └─► adbkit (TCP)
-        └─► @electron/remote (titlebar, menus)
+        └─► @electron/remote (tray, menus)
 ```
 
 <br/>

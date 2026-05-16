@@ -23,19 +23,16 @@ function createWindow() {
 	mainWindow = new BrowserWindow({
 		height: 800,
 		width: 513,
-		frame: false,
+		titleBarStyle: 'hiddenInset',
 		title: 'DroidScreen',
 		fullscreenable: false,
-		// titleBarStyle: 'hidden',
-		vibrancy: 'ultra-dark',
+		vibrancy: 'under-window',
 		center: true,
-		icon: `${__static}/icons/256x256.png`,
 		show: false,
 		webPreferences: {
 			backgroundThrottling: false,
 			nodeIntegration: true,
-			contextIsolation: false,
-			enableRemoteModule: true
+			contextIsolation: false
 		},
 		// resizable: false
 	})
